@@ -9,14 +9,36 @@ int main() {
 	table.show_table();
 	*/
 	//users
-	CURRENT_TIME = 45;
-	register_user();
-	register_user();
-	string res = authorize();
-	if (res != "\0") {
-		int role_key = res[0];
-		int pos = index(res);
-		patient_work_loop(pos);
+	set_time();
+	int c = -1;
+	while (c != 0) {
+		cout << "exit-0\nregister-1\nlog in-2\n";
+		cout << "-----------------------------------" << endl;
+		cin >> c;
+		if (c == 1) {
+			register_user();
+			cout << "-----------------------------------" << endl;
+		}
+		if (c == 2) {
+			string res = authorize();
+			int role_key = res[0] - 48;
+			int pos = index(res);
+			cout << "parsed: " << role_key << " " << pos << endl;
+			switch (role_key) {
+			case 1:
+				patient_work_loop(pos);
+				break;
+			case 2:
+				doctor_working_loop(role_key, pos);
+				break;
+			case 3:
+				pharmacist_working_loop(pos);
+				break;
+			case 4:
+				doctor_working_loop(role_key, pos);
+				break;
+			}
+		}
 	}
 	return 0;
 }

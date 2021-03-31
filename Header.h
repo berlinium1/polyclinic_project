@@ -58,6 +58,19 @@ public:
 	void show_table();
 };
 
+class Recipe {
+	int patient_id;
+	bool is_given = false;
+public:
+	vector<string> medicines;
+	Recipe() {}
+	Recipe(int patient_id, vector<string> meds) {
+		this->patient_id = patient_id;
+		this->medicines = meds;
+	}
+	void set_as_given() { is_given = true; }
+};
+
 class Patient {
 	int id;
 	string password;
@@ -67,10 +80,10 @@ class Patient {
 	vector<string> health_problems;
 	vector<Examination> previous_examintions;
 	Appointment current_appointment = Appointment(id, NULL, NULL);
-	//Recipe current_recipe = NULL
 
 public:
 	Examination current_examination = Examination(id, NULL, NULL);
+	Recipe current_recipe = Recipe();
 	bool is_being_treated = false;
 	int getPatientId();
 	Patient(string name, string password, int id, int sex, int age);
@@ -100,7 +113,7 @@ public:
 
 	void check_medical();
 	void finish_treatment(int patient_id);
-	void add_recipe(int patient_id, string* medicines);
+	void add_recipe(int patient_id, vector<string> medicines);
 	void add_refferal(int patient_id, int doctor_id, string purpose);
 	void new_examination(int doctor_id);
 	void add_health_problems(vector<string> problems);
@@ -125,6 +138,8 @@ public:
 };
 
 int pick_time();
+void set_time();
+int get_current_time();
 string authorize();
 void register_user();
 string choose_specialization();
@@ -133,9 +148,10 @@ void appointment_name(int);
 void appointment_time(int);
 void patient_work_loop(int);
 void doctor_working_loop(int, int);
+void pharmacist_working_loop(int);
+int position(int);
 
 extern vector<Patient> patients;
 extern vector<Doctor> doctors;
 extern vector<Pharmacist> pharmacists;
 extern vector<Therapist> therapists;
-extern int CURRENT_TIME;

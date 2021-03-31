@@ -39,6 +39,13 @@ void Patient::show_info() {
 		appointment_time(current_appointment.getTime());
 		cout << "-----------------------------------" << endl;
 	}
+	if (!current_recipe.medicines.empty()) {
+		cout << "-----------------------------------" << endl;
+		cout << "Recipe: " << endl;
+		for (size_t i = 0; i < current_recipe.medicines.size(); i++) {
+			cout << current_recipe.medicines[i] << endl;
+		}
+	}
 }
 
 int Patient::getPatientId() {
