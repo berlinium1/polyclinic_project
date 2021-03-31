@@ -21,6 +21,7 @@ first id number
 1-Patient
 2-Doctor
 3-Pharmacist
+4-Therapist
 */
 string authorize() {
 	string id, password;            
@@ -257,9 +258,7 @@ void patient_work_loop(int pos) {
 			Timetable table = therapists[doc].getScedule();
 			table.show_table();
 			int time = pick_time();
-			table.add_appointment(time * 15, user.getPatientId(), doc_id);
-			table.show_table();
-			//user.make_appointment();
+			user.make_appointment(doc, time);
 		}
 	}
 }
@@ -278,7 +277,8 @@ void appointment_name(int id) {
 }
 
 void appointment_time(int time) {
-	int h = int(time) / 60;
-	int m = time - h * 60;
-	cout << "Time: " << h + 8 << ":" << m << endl;
+	int t = time * 15;
+	int h = int(t) / 60;
+	int m = t - h * 60;
+	cout << " Time: " << h + 9 << ":" << m << endl;
 }

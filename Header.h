@@ -69,44 +69,11 @@ class Patient {
 	//Recipe current_recipe = NULL
 
 public:
-	int getPatientId() {
-		return id;
-	}
-
-	Patient(string name, string password, int id, int sex, int age) {
-		this->name = name;
-		this->password = password;
-		this->id = id;
-		this->age = age;
-		this->sex = sex;
-	}
-
-	string show_password() {
-		return password;
-	}
-
-	void make_appointment(int doctor_id, int time) {
-		
-	}
-
-	void show_info() {
-		cout << "-----------------------------------" << endl;
-		string s = sex == 1 ? "man" : "woman";
-		cout << name << endl << "sex: " << s << "|" << " age: " << age << endl;
-		if (health_problems.size() > 0) {
-			cout << "health problems: " << endl;
-			for (size_t i = 0; i < health_problems.size(); i++) {
-				cout << i << ") " << health_problems[i] << endl;
-			}
-			if (current_appointment.getTime() != NULL) {
-				cout << "-----------------------------------" << endl;
-				cout << "Current appointment: " << endl;
-				appointment_name(current_appointment.getDoctor());
-				appointment_time(current_appointment.getTime());
-				cout << "-----------------------------------" << endl;
-			}
-		}
-	}
+	int getPatientId();
+	Patient(string name, string password, int id, int sex, int age);
+	string show_password();
+	void make_appointment(int doctor_id, int time);
+	void show_info();
 };
 
 class Doctor {
@@ -120,26 +87,13 @@ class Doctor {
 
 public:
 
-	Doctor(string name, int doctor_id, string password, string specialization) {
-		this->name = name;
-		this->id = doctor_id;
-		this->password = password;
-		this->specialization = specialization;
-		personal_shedule = Timetable(doctor_id);
-	}
-	int getDoctorId() {
-		return id;
-	}
-	void show_shedule() {
-		personal_shedule.show_table();
-	}
-	string show_password() {
-		return password;
-	}
+	Doctor(string name, int doctor_id, string password, string specialization);
+	int getDoctorId();
+	void show_shedule();
+	string show_password();
+	Timetable getScedule();
+	string get_name();
 
-	Timetable getScedule() { return personal_shedule; }
-
-	string get_name() { return name; }
 	void check_medical();
 	void finish_treatment(int patient_id);
 	void add_recipe(int patient_id, string* medicines);
@@ -178,4 +132,4 @@ void patient_work_loop(int pos);
 extern vector<Patient> patients;
 extern vector<Doctor> doctors;
 extern vector<Pharmacist> pharmacists;
-extern string STAFF_CODE;
+extern vector<Therapist> therapists;
