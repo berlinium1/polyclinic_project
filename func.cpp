@@ -6,6 +6,8 @@ vector<Pharmacist> pharmacists;
 vector<Therapist> therapists;
 string STAFF_CODE = "Aboba1234";
 
+
+
 int pick_time() {
 	int choice;
 	cout << "pick free time" << endl;
@@ -49,7 +51,7 @@ string authorize() {
 				return "\0";
 			}
 			else {
-				if (patients[index].password == password) {
+				if (patients[index].show_password() == password) {
 					return id;
 				}
 				return "\0";
@@ -62,7 +64,7 @@ string authorize() {
 				return "\0";
 			}
 			else {
-				if (doctors[index].password == password) {
+				if (doctors[index].show_password() == password) {
 					return id;
 				}
 				return "\0";
@@ -88,7 +90,7 @@ string authorize() {
 				return "\0";
 			}
 			else {
-				if (therapists[index].password == password) {
+				if (therapists[index].show_password() == password) {
 					return id;
 				}
 				return "\0";
@@ -109,16 +111,21 @@ void register_user() {
 	cin >> choice;
 	if (choice == 1) {
 		string name, password1, password2;
+		int sex, age;
 		cout << "Enter your name: ";
 		getline(cin.ignore(), name);
 		cout << "Enter your password: ";
 		cin >> password1;
 		cout << "Enter it again: ";
 		cin >> password2;
+		cout << "Choose sex:\nMan-1\nWoman-2\nYour sex: ";
+		cin >> sex;
+		cout << "Age: ";
+		cin >> age;
 		if (password1 == password2) {
 			int nums = patients.size() == 0 ? 1 : int(log10(patients.size()) + 1);
 			int id = pow(10, nums) + patients.size();
-			patients.push_back(Patient(name, password1, id));
+			patients.push_back(Patient(name, password1, id, sex, age));
 			cout << "-----------------------------------" << endl;
 			cout << "Done! " << name << "\nYour log in is " << id << endl;
 			cout << "-----------------------------------" << endl;
@@ -147,7 +154,7 @@ void register_user() {
 						if (spec == "Therapist") {
 							int nums = therapists.size() == 0 ? 1 : int(log10(therapists.size()) + 1);
 							int id = 4 * pow(10, nums) + therapists.size();
-							therapists.push_back(Therapist(name, password1, id, spec));
+							therapists.push_back(Therapist(name, id, password1, spec));
 							cout << "-----------------------------------" << endl;
 							cout << "Done! Dr." << name << "\nYour " << spec << " log in is " << id << endl;
 							cout << "-----------------------------------" << endl;
@@ -155,7 +162,7 @@ void register_user() {
 						else {
 							int nums = doctors.size() == 0 ? 1 : int(log10(doctors.size()) + 1);
 							int id = 2 * pow(10, nums) + doctors.size();
-							doctors.push_back(Doctor(name, password1, id, spec));
+							doctors.push_back(Doctor(name, id, password1, spec));
 							cout << "-----------------------------------" << endl;
 							cout << "Done! Dr." << name << "\nYour " << spec << " log in is " << id << endl;
 							cout << "-----------------------------------" << endl;
@@ -202,4 +209,76 @@ string choose_specialization() {
 	case 9: return "Urology";
 	default: exit(1);
 	}
+}
+
+int index(string id) {
+	int res = 0;
+	for (size_t i = 1; i < id.length(); i++) {
+		if (id[i] < 48 || id[i] > 57) {
+		}
+		res *= 10;
+		res += id[i] - 48;
+	}
+	return res;
+}
+
+void get_access(int role, int pos) {
+	switch (role) {
+	case 1:
+		patient_work_loop(pos);
+		break;
+	}
+}
+
+void patient_work_loop(int pos) {
+	Patient user = patients[pos];
+	int choice = -1;
+	cout << "-----------------------------------" << endl;
+	cout << "Insert 0 any time you want to leave\n";
+	cout << "-----------------------------------" << endl;
+	while (choice != 0) {
+		cout << "-----------------------------------" << endl;
+		cout << "Check info-1\nMake an appointment-2\nChoice: ";
+		cin >> choice;
+		cout << "-----------------------------------" << endl;
+		switch (choice) {
+		case 1:
+			user.show_info();
+			break;
+		case 2:
+			int doc;
+			cout << "Choose doctor" << endl;
+			for (size_t i = 0; i < therapists.size(); i++) {
+				cout << i << ") " << therapists[i].get_name();
+			}
+			cout << "Choice: " << endl;
+			cin >> doc;
+			int doc_id = therapists[doc].getDoctorId();
+			Timetable table = therapists[doc].getScedule();
+			table.show_table();
+			int time = pick_time();
+			table.add_appointment(time * 15, user.getPatientId(), doc_id);
+			table.show_table();
+			//user.make_appointment();
+		}
+	}
+}
+
+void appointment_name(int id) {
+	int nums = id == 0 ? 1 : int(log10(id));
+	int role = int(id / pow(10, nums));
+	int index = id - role * pow(10, nums);
+	switch (role) {
+	case 2: 
+		cout << "Doctor: " << doctors[index].get_name();
+		break;
+	case 4:
+		cout << "Doctor: " << therapists[index].get_name();
+	}
+}
+
+void appointment_time(int time) {
+	int h = int(time) / 60;
+	int m = time - h * 60;
+	cout << "Time: " << h + 8 << ":" << m << endl;
 }

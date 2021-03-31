@@ -4,12 +4,12 @@ Appointment::Appointment() {
 	this->time = NULL;
 	this->patient_id = NULL;
 }
-
+/*
 Appointment::Appointment(int patient_id, int time) {
 	this->time = time;
 	this->patient_id = patient_id;
 }
-
+*/
 int Appointment::getTime() {
 	return time;
 }
@@ -51,8 +51,8 @@ void Timetable::show_table() {
 	}
 }
 
-void Timetable::add_appointment(int time, int patient_id) {
+void Timetable::add_appointment(int time, int patient_id, int doctor_id) {
 	if (appointments[time/15].getTime() == NULL) {
-		appointments[time/15] = Appointment(patient_id, time);
+		appointments[time/15] = Appointment(patient_id, doctor_id, time);
 	}
 }

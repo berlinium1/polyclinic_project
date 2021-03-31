@@ -9,9 +9,13 @@ int main() {
 	table.show_table();
 	*/
 	//users
-
+	register_user();
 	register_user();
 	string res = authorize();
-	if (res != "\0") cout << res << "FOUND";
+	if (res != "\0") {
+		int role_key = res[0];
+		int pos = index(res);
+		patient_work_loop(pos);
+	}
 	return 0;
 }
