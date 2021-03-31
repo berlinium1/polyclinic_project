@@ -1,10 +1,10 @@
 #include "Header.h"
-
+/*
 Appointment::Appointment() {
 	this->time = NULL;
 	this->patient_id = NULL;
 }
-/*
+
 Appointment::Appointment(int patient_id, int time) {
 	this->time = time;
 	this->patient_id = patient_id;
@@ -54,5 +54,21 @@ void Timetable::show_table() {
 void Timetable::add_appointment(int time, int patient_id, int doctor_id) {
 	if (appointments[time/15].getTime() == NULL) {
 		appointments[time/15] = Appointment(patient_id, doctor_id, time);
+	}
+}
+
+void Timetable::notificate(int doctor_id) {
+	for (int i = 0; i < 15; i++) {
+		if (CURRENT_TIME == i * 15) {
+			if (appointments[i].getTime() != NULL) {
+				int patient = appointments[i].getPatientId();
+				int nums = patient == 0 ? 1 : int(log10(patient));
+				int role = int(patient / pow(10, nums));
+				int index = patient - role * pow(10, nums);
+				cout << "A patient is about to come. Be ready. " << endl;
+				appointment_time(appointments[i].getTime());
+				patients[index].show_info();
+			}
+		}
 	}
 }

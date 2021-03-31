@@ -6,7 +6,27 @@ vector<Pharmacist> pharmacists;
 vector<Therapist> therapists;
 string STAFF_CODE = "Aboba1234";
 
-
+void set_time() {
+	int choice;
+	int hour = 9;
+	int min = 0;
+	int counter = 1;
+	cout << "-----------------------------------" << endl;
+	cout << "As it is a demo program pick time:" << endl;
+	for (int i = 0; i < 15; i++) {
+		cout << setw(2) << setfill(' ') << counter << ") " << endl;
+		counter++;
+		min += 15;
+		if (min > 59) {
+			hour += 1;
+			min = 0;
+		}
+	}
+	cout << "Choice: " << endl;
+	cin >> choice;
+	CURRENT_TIME = (choice - 1) * 15;
+	cout << "-----------------------------------" << endl;
+}
 
 int pick_time() {
 	int choice;
@@ -247,18 +267,23 @@ void patient_work_loop(int pos) {
 			user.show_info();
 			break;
 		case 2:
-			int doc;
-			cout << "Choose doctor" << endl;
-			for (size_t i = 0; i < therapists.size(); i++) {
-				cout << i << ") " << therapists[i].get_name();
+			if (user.is_being_treated) {
+				cout << "You are already being treated!" << endl;
 			}
-			cout << "Choice: " << endl;
-			cin >> doc;
-			int doc_id = therapists[doc].getDoctorId();
-			Timetable table = therapists[doc].getScedule();
-			table.show_table();
-			int time = pick_time();
-			user.make_appointment(doc, time);
+			else {
+				int doc;
+				cout << "Choose doctor" << endl;
+				for (size_t i = 0; i < therapists.size(); i++) {
+					cout << i << ") " << therapists[i].get_name();
+				}
+				cout << "Choice: " << endl;
+				cin >> doc;
+				int doc_id = therapists[doc].getDoctorId();
+				Timetable table = therapists[doc].getScedule();
+				table.show_table();
+				int time = pick_time();
+				user.make_appointment(doc, time);
+			}
 		}
 	}
 }
@@ -281,4 +306,55 @@ void appointment_time(int time) {
 	int h = int(t) / 60;
 	int m = t - h * 60;
 	cout << " Time: " << h + 9 << ":" << m << endl;
+}
+
+void doctor_working_loop(int role, int pos) {
+	switch (role) {
+	case 2:
+		Doctor user = doctors[pos];
+		int choice = -1;
+		user.getScedule().notificate(user.getDoctorId());
+		cout << "-----------------------------------" << endl;
+		cout << "Insert 0 any time you want to leave\n";
+		cout << "-----------------------------------" << endl;
+		while (choice != 0) {
+			cout << "Start treatment insert-1\nCheck schedule-2" << endl;
+			cin >> choice;
+			switch (choice) {
+			case 1:
+				int pat_id;
+				cout << "Insert patients id: ";
+				cin >> pat_id;
+				if (pat_id > patients.size() || pat_id < 0) {
+					cout << "Incorrect id";
+				}
+				else {
+					Patient patient = patients[pat_id];
+					patient.current_examination = Examination(patient.getPatientId(), user.getDoctorId(), patient.get_appointment().getTime());
+					int treatment_choice = -1;
+					cout << "-----------------------------------" << endl;
+					cout << "Treatment menu:" << endl;
+					while (treatment_choice != 0) {
+						cout << "Medical card-1\nAdd recipe-2\nAdd referral-3\nAdd health problems-4\nDelete health problems-5\nChoice: ";
+						cin >> treatment_choice;
+						switch (treatment_choice) {
+						case 1:
+							patient.show_info();
+							break;
+						case 2:
+
+							break;
+						}
+					}
+				}
+				break;
+			case 2: 
+				user.getScedule().show_table();
+				cout << "-----------------------------------" << endl;
+				break;
+			}
+		}
+		break;
+	}
+
 }

@@ -9,6 +9,7 @@ int main() {
 	table.show_table();
 	*/
 	//users
+	CURRENT_TIME = 45;
 	register_user();
 	register_user();
 	string res = authorize();

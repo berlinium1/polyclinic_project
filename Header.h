@@ -22,7 +22,9 @@ public:
 
 	void create_recipe(string* medicines);
 	void make_referral(int patient_id, int doctor_id);
-	bool mark_as_held();
+	bool mark_as_held() {
+		was_held = true;
+	};
 };
 
 class Appointment {
@@ -64,15 +66,17 @@ class Patient {
 	int age;
 	vector<string> health_problems;
 	vector<Examination> previous_examintions;
-	Examination current_examination = Examination(id, NULL, NULL);
 	Appointment current_appointment = Appointment(id, NULL, NULL);
 	//Recipe current_recipe = NULL
 
 public:
+	Examination current_examination = Examination(id, NULL, NULL);
+	bool is_being_treated = false;
 	int getPatientId();
 	Patient(string name, string password, int id, int sex, int age);
 	string show_password();
 	void make_appointment(int doctor_id, int time);
+	Appointment get_appointment() { return current_appointment; }
 	void show_info();
 };
 
@@ -127,9 +131,11 @@ string choose_specialization();
 int index(string);
 void appointment_name(int);
 void appointment_time(int);
-void patient_work_loop(int pos);
+void patient_work_loop(int);
+void doctor_working_loop(int, int);
 
 extern vector<Patient> patients;
 extern vector<Doctor> doctors;
 extern vector<Pharmacist> pharmacists;
 extern vector<Therapist> therapists;
+extern int CURRENT_TIME;

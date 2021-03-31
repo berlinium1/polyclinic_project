@@ -25,6 +25,7 @@ void Patient::show_info() {
 	cout << "-----------------------------------" << endl;
 	string s = sex == 1 ? "man" : "woman";
 	cout << name << endl << "sex: " << s << "|" << " age: " << age << endl;
+	cout << "id: " << id << endl;
 	if (health_problems.size() > 0) {
 		cout << "health problems: " << endl;
 		for (size_t i = 0; i < health_problems.size(); i++) {
