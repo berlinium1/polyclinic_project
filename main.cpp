@@ -12,7 +12,7 @@ int main() {
 	set_time();
 	int c = -1;
 	while (c != 0) {
-		cout << "exit-0\nregister-1\nlog in-2\n";
+		cout << "exit-0\nregister-1\nlog in-2\ndebug info-3\n";
 		cout << "-----------------------------------" << endl;
 		cin >> c;
 		if (c == 1) {
@@ -38,6 +38,9 @@ int main() {
 				doctor_working_loop(role_key, pos);
 				break;
 			}
+		}
+		if (c == 3) {
+			patients[0].show_info();
 		}
 	}
 	return 0;

@@ -19,12 +19,6 @@ public:
 		this->doctor_id = doctor_id;
 		this->time = time;
 	}
-
-	void create_recipe(string* medicines);
-	void make_referral(int patient_id, int doctor_id);
-	bool mark_as_held() {
-		was_held = true;
-	};
 };
 
 class Appointment {
@@ -34,11 +28,7 @@ private:
 	int doctor_id;
 public:
 	Appointment();
-	Appointment(int patient, int doctor_id, int time) {
-		this->patient_id = patient;
-		this->doctor_id = doctor_id;
-		this->time = time;
-	}
+	Appointment(int patient, int doctor_id, int time);
 	int getTime();
 	int getPatientId() { return patient_id; }
 	int getDoctor() { return doctor_id; }
@@ -78,10 +68,10 @@ class Patient {
 	int sex;
 	int age;
 	vector<string> health_problems;
-	vector<Examination> previous_examintions;
-	Appointment current_appointment = Appointment(id, NULL, NULL);
+	Appointment current_appointment;
 
 public:
+	vector<Examination> previous_examintions;
 	Examination current_examination = Examination(id, NULL, NULL);
 	Recipe current_recipe = Recipe();
 	bool is_being_treated = false;
@@ -89,7 +79,8 @@ public:
 	Patient(string name, string password, int id, int sex, int age);
 	string show_password();
 	void make_appointment(int doctor_id, int time);
-	Appointment get_appointment() { return current_appointment; }
+	Appointment get_appointment();
+	void set_appointment(Appointment);
 	void show_info();
 };
 
@@ -111,8 +102,6 @@ public:
 	Timetable getScedule();
 	string get_name();
 
-	void check_medical();
-	void finish_treatment(int patient_id);
 	void add_recipe(int patient_id, vector<string> medicines);
 	void add_refferal(int patient_id, int doctor_id, string purpose);
 	void new_examination(int doctor_id);

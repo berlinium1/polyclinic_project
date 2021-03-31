@@ -6,6 +6,8 @@ Patient::Patient(string name, string password, int id, int sex, int age) {
 	this->id = id;
 	this->age = age;
 	this->sex = sex;
+	this->current_appointment = Appointment(id, NULL, NULL);
+	//cout << "000000000000000000000" << endl;
 }
 
 void Patient::make_appointment(int doctor_index, int time) {
@@ -32,7 +34,7 @@ void Patient::show_info() {
 			cout << i << ") " << health_problems[i] << endl;
 		}
 	}
-	if (current_appointment.getDoctor() != NULL) {
+	if (current_appointment.getTime() != NULL) {
 		cout << "-----------------------------------" << endl;
 		cout << "Current appointment: " << endl;
 		appointment_name(current_appointment.getDoctor());
@@ -54,4 +56,10 @@ int Patient::getPatientId() {
 
 string Patient::show_password() {
 	return password;
+}
+
+Appointment Patient::get_appointment() { return current_appointment; }
+
+void Patient::set_appointment(Appointment app) {
+	current_appointment = app;
 }

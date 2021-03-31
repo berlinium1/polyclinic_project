@@ -266,7 +266,7 @@ void get_access(int role, int pos) {
 }
 
 void patient_work_loop(int pos) {
-	Patient user = patients[pos];
+	//Patient user = patients[pos];
 	int choice = -1;
 	cout << "-----------------------------------" << endl;
 	cout << "Insert 0 any time you want to leave\n";
@@ -278,17 +278,17 @@ void patient_work_loop(int pos) {
 		cout << "-----------------------------------" << endl;
 		switch (choice) {
 		case 1:
-			user.show_info();
+			patients[pos].show_info();
 			break;
 		case 2:
-			if (user.is_being_treated) {
+			if (patients[pos].is_being_treated) {
 				cout << "You are already being treated!" << endl;
 			}
 			else {
 				int doc;
 				cout << "Choose doctor" << endl;
 				for (size_t i = 0; i < therapists.size(); i++) {
-					cout << i << ") " << therapists[i].get_name();
+					cout << i << ") " << therapists[i].get_name() << endl;
 				}
 				cout << "Choice: " << endl;
 				cin >> doc;
@@ -296,7 +296,7 @@ void patient_work_loop(int pos) {
 				Timetable table = therapists[doc].getScedule();
 				table.show_table();
 				int time = pick_time();
-				user.make_appointment(doc, time);
+				patients[pos].make_appointment(doc, time);
 			}
 		}
 	}
@@ -322,6 +322,15 @@ void appointment_time(int time) {
 	cout << " Time: " << h + 9 << ":" << m << endl;
 }
 
+void find_docs(string spec) {
+	cout << "-----------------------------------" << endl;
+	cout << spec << " doctors:" << endl;
+	for (size_t i = 0; i < doctors.size(); i++) {
+		cout << i << "--" << doctors[i].get_name() << endl;
+	}
+	cout << "Choice: ";
+}
+
 void doctor_working_loop(int role, int pos) {
 	 if (role == 2) {
 		Doctor user = doctors[pos];
@@ -343,7 +352,8 @@ void doctor_working_loop(int role, int pos) {
 				}
 				else {
 					Patient patient = patients[position(pat_id)];
-					patient.current_examination = Examination(patient.getPatientId(), user.getDoctorId(), patient.get_appointment().getTime());
+					patients[position(pat_id)].is_being_treated = true;
+					patients[position(pat_id)].current_examination = Examination(patients[position(pat_id)].getPatientId(), user.getDoctorId(), patients[position(pat_id)].get_appointment().getTime());
 					int treatment_choice = -1;
 					cout << "-----------------------------------" << endl;
 					cout << "Treatment menu:" << endl;
@@ -352,7 +362,7 @@ void doctor_working_loop(int role, int pos) {
 						cin >> treatment_choice;
 						switch (treatment_choice) {
 						case 1:
-							patient.show_info();
+							patients[position(pat_id)].show_info();
 							break;
 						case 2:
 							vector<string> medicines;
@@ -398,20 +408,22 @@ void doctor_working_loop(int role, int pos) {
 				 }
 				 else {
 					 Patient patient = patients[position(pat_id)];
-					 patient.current_examination = Examination(patient.getPatientId(), user.getDoctorId(), patient.get_appointment().getTime());
+					 patients[position(pat_id)].is_being_treated = true;
+					 patients[position(pat_id)].current_examination = Examination(patients[position(pat_id)].getPatientId(), user.getDoctorId(), patients[position(pat_id)].get_appointment().getTime());
 					 int treatment_choice = -1;
 					 cout << "-----------------------------------" << endl;
 					 cout << "Treatment menu:" << endl;
 					 while (treatment_choice != 0) {
-						 cout << "Medical card-1\nAdd recipe-2\nAdd referral-3\nAdd health problems-4\nDelete health problems-5\nChoice: ";
+						 cout << "Medical card-1\nAdd recipe-2\nAdd referral-3\nAdd health problems-4\nDelete health problems-5\nFinish treatment-6\nChoice: ";
 						 cin >> treatment_choice;
+						 vector<string> medicines;
+						 string tmp = "\0";
+						 int doc_choice, referral_time;
 						 switch (treatment_choice) {
 						 case 1:
-							 patient.show_info();
+							 patients[position(pat_id)].show_info();
 							 break;
 						 case 2:
-							 vector<string> medicines;
-							 string tmp = "\0";
 							 cout << "-----------------------------------" << endl;
 							 cout << "Insert the medecines and prescriptions or \"stop\" finish" << endl;
 							 while (true) {
@@ -421,6 +433,20 @@ void doctor_working_loop(int role, int pos) {
 								 medicines.push_back(tmp);
 								 user.add_recipe(pat_id, medicines);
 							 }
+							 break;
+						 case 3:
+							 cout << "-----------------------------------" << endl;
+							 cout << "Referral menu:\n";
+							 tmp = choose_specialization();
+							 find_docs(tmp);
+							 cin >> doc_choice;
+							 doctors[doc_choice].getScedule().show_table();
+							 referral_time = pick_time();
+							 doctors[doc_choice].getScedule().add_appointment(referral_time, pat_id, doctors[doc_choice].getDoctorId());
+							 patients[position(pat_id)].set_appointment(Appointment(patients[position(pat_id)].getPatientId(), doctors[doc_choice].getDoctorId(), referral_time * 15));
+							 break;
+						 case 6:
+							 user.finish_treatment(pat_id);
 							 break;
 						 }
 					 }
@@ -449,6 +475,7 @@ void pharmacist_working_loop(int pos) {
 			int pat_pos = position(pat_id);
 			Recipe rec = patients[pat_pos].current_recipe;
 			vector<string> meds = rec.medicines;
+			cout << "-----------------------------------" << endl;
 			cout << "Recipe";
 			for (size_t i = 0; i < meds.size(); i++) {
 				cout << meds[i] << endl;

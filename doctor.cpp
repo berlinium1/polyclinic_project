@@ -27,3 +27,11 @@ void Doctor::add_recipe(int id, vector<string> meds) {
 	int index = id - role * pow(10, nums);
 	patients[index].current_recipe = Recipe(index, meds);
 }
+
+void Therapist::finish_treatment(int patient_id) {
+	int pos = position(patient_id);
+	Patient patient = patients[pos];
+	patient.previous_examintions.push_back(patient.current_examination);
+	patient.current_examination = Examination(patient.getPatientId(), NULL, NULL);
+	patient.is_being_treated = false;
+}

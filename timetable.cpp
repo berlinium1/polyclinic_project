@@ -3,7 +3,16 @@
 Appointment::Appointment() {
 	this->time = NULL;
 	this->patient_id = NULL;
+	//cout << "||||||||||||||||||||||||||" << endl;
 }
+
+Appointment::Appointment(int patient, int doctor_id, int time) {
+	this->patient_id = patient;
+	this->doctor_id = doctor_id;
+	this->time = time;
+	//cout << "77777777777777777777777" << endl;
+}
+
 /*
 Appointment::Appointment(int patient_id, int time) {
 	this->time = time;
@@ -13,6 +22,7 @@ Appointment::Appointment(int patient_id, int time) {
 int Appointment::getTime() {
 	return time;
 }
+
 
 Timetable::Timetable(int doctor_id) {
 	this->doctor_id = doctor_id;
