@@ -442,8 +442,8 @@ void doctor_working_loop(int role, int pos) {
 							 cin >> doc_choice;
 							 doctors[doc_choice].getScedule().show_table();
 							 referral_time = pick_time();
-							 doctors[doc_choice].getScedule().add_appointment(referral_time, pat_id, doctors[doc_choice].getDoctorId());
-							 patients[position(pat_id)].set_appointment(Appointment(patients[position(pat_id)].getPatientId(), doctors[doc_choice].getDoctorId(), referral_time * 15));
+							 doctors[doc_choice].getScedule().add_appointment(referral_time * 15, pat_id, doctors[doc_choice].getDoctorId());
+							 patients[position(pat_id)].set_appointment(Appointment(patients[position(pat_id)].getPatientId(), doctors[doc_choice].getDoctorId(), referral_time));
 							 break;
 						 case 6:
 							 user.finish_treatment(pat_id);
