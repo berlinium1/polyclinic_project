@@ -391,6 +391,9 @@ void doctor_working_loop(int role, int pos) {
                             }
                             }
                             break;
+                            case 3:
+                               user.add_refferal(pat_id);
+                               break;
                             case 4:{
                                     vector<string> healthProblems;
                                     string temp = "\0";
