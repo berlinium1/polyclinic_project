@@ -81,10 +81,9 @@ void Doctor::remove_health_problems(int patient_id, vector<string> problems){
 
 void Therapist::finish_treatment(int patient_id) {
     int pos = position(patient_id);
-    Patient patient = patients[pos];
-    patient.previous_examintions.push_back(patient.current_examination);
-    patient.current_examination = Examination(patient.getPatientId(), NULL, NULL);
-    patient.is_being_treated = false;
+    patients[pos].previous_examintions.push_back(patients[pos].current_examination);
+    patients[pos].current_examination = Examination(patients[pos].getPatientId(), NULL, NULL);
+    patients[pos].is_being_treated = false;
 }
 
 void Pharmacist::mark_as_given(int pat_id) {

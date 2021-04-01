@@ -5,7 +5,7 @@ vector<Patient> patients;
 vector<Doctor> doctors;
 vector<Pharmacist> pharmacists;
 vector<Therapist> therapists;
-string STAFF_CODE = "Aboba1234";
+string STAFF_CODE = "code1234";
 int CURRENT_TIME;
 
 
@@ -302,6 +302,7 @@ void patient_work_loop(int pos) {
                 table.show_table();
                 while (true) {
                     int time = pick_time();
+                    if (time == -1) break;
                     if (therapists[doc].getShedule().appointments[time].getTime() != NULL) {
                         cout<<"Pay attention: this time's already occupied. Choose another variant.\n";
                     }
@@ -382,6 +383,7 @@ void doctor_working_loop(int role, int pos) {
                             string tmp = "\0";
                             cout << "-----------------------------------" << endl;
                             cout << "Insert the medicines and prescriptions or \"stop\" finish" << endl;
+                            cin.ignore();
                             while (true) {
                                 cout << "med: " ;
                                 getline(cin, tmp);
@@ -399,6 +401,7 @@ void doctor_working_loop(int role, int pos) {
                                     string temp = "\0";
                                     cout << "-----------------------------------" << endl;
                                     cout << "Insert patient's health problems which you've detected or \"stop\" finish" << endl;
+                                    cin.ignore();
                                     while (true) {
                                         cout << "Problem: " ;
                                         getline(cin, temp);
@@ -413,6 +416,7 @@ void doctor_working_loop(int role, int pos) {
                                     string temp = "\0";
                                     cout << "-----------------------------------" << endl;
                                     cout << "Erase patient's problems whish were cured or \"stop\" finish" << endl;
+                                    cin.ignore();
                                     while (true) {
                                         cout << "Problem: " ;
                                         getline(cin, temp);
@@ -471,6 +475,7 @@ void doctor_working_loop(int role, int pos) {
                          case 2:
                              cout << "-----------------------------------" << endl;
                              cout << "Insert the medecines and prescriptions or \"stop\" finish" << endl;
+                             cin.ignore();
                              while (true) {
                                  cout << "med: ";
                                  getline(cin, tmp);
@@ -487,6 +492,7 @@ void doctor_working_loop(int role, int pos) {
                                  string temp = "\0";
                                  cout << "-----------------------------------" << endl;
                                  cout << "Insert patient's health problems which you've detected or \"stop\" finish" << endl;
+                                 cin.ignore();
                                  while (true) {
                                      cout << "Problem: " ;
                                      getline(cin, temp);
@@ -501,6 +507,7 @@ void doctor_working_loop(int role, int pos) {
                                  string temp = "\0";
                                  cout << "-----------------------------------" << endl;
                                  cout << "Erase patient's problems whish were cured or \"stop\" finish" << endl;
+                                 cin.ignore();
                                  while (true) {
                                      cout << "Problem: " ;
                                      getline(cin, temp);
