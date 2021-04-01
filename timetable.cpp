@@ -3,22 +3,14 @@
 Appointment::Appointment() {
 	this->time = NULL;
 	this->patient_id = NULL;
-	//cout << "||||||||||||||||||||||||||" << endl;
 }
 
 Appointment::Appointment(int patient, int doctor_id, int time) {
 	this->patient_id = patient;
 	this->doctor_id = doctor_id;
 	this->time = time;
-	//cout << "77777777777777777777777" << endl;
 }
 
-/*
-Appointment::Appointment(int patient_id, int time) {
-	this->time = time;
-	this->patient_id = patient_id;
-}
-*/
 int Appointment::getTime() {
 	return time;
 }
@@ -50,7 +42,7 @@ void Timetable::show_table() {
 			}
 		}
 		else {
-			cout << setw(2) << setfill(' ') << counter << ") " << setw(2) << setfill(' ') << hour << ":" << setw(2) << setfill('0') << min << " Taken" << endl;
+			cout << setw(2) << setfill(' ') << counter << ") " << setw(2) << setfill(' ') << hour << ":" << setw(2) << setfill('0') << min << " Taken by " << appointments[i].getPatientId() << endl;
 			counter++;
 			min += 15;
 			if (min > 59) {

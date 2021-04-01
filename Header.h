@@ -5,9 +5,6 @@
 #include <cmath>
 using namespace std;
 
-void appointment_name(int);
-void appointment_time(int);
-
 class Examination {
 	int patient_id;
 	int time;
@@ -92,18 +89,15 @@ class Doctor {
 	friend class Timetable;
 	Timetable personal_shedule;
 
-
 public:
-
 	Doctor(string name, int doctor_id, string password, string specialization);
 	int getDoctorId();
 	void show_shedule();
 	string show_password();
 	Timetable getScedule();
 	string get_name();
-
 	void add_recipe(int patient_id, vector<string> medicines);
-	void add_refferal(int patient_id, int doctor_id, string purpose);
+	void add_refferal(int patient_id);
 	void new_examination(int doctor_id);
 	void add_health_problems(vector<string> problems);
 	void remove_health_problems(vector<string> problems);
@@ -118,6 +112,8 @@ public:
 		this->password = password;
 		this->id = id;
 	}
+	void show_recipe(int id);
+	void mark_as_given(int id);
 };
 
 class Therapist : public Doctor {
@@ -137,8 +133,10 @@ void appointment_name(int);
 void appointment_time(int);
 void patient_work_loop(int);
 void doctor_working_loop(int, int);
+void main_loop();
 void pharmacist_working_loop(int);
 int position(int);
+void find_docs(string);
 
 extern vector<Patient> patients;
 extern vector<Doctor> doctors;
