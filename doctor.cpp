@@ -83,6 +83,7 @@ void Therapist::finish_treatment(int patient_id) {
     int pos = position(patient_id);
     patients[pos].previous_examintions.push_back(patients[pos].current_examination);
     patients[pos].current_examination = Examination(patients[pos].getPatientId(), NULL, NULL);
+    patients[pos].set_appointment(Appointment(patients[pos].getPatientId(), NULL, NULL));
     patients[pos].is_being_treated = false;
 }
 
@@ -110,3 +111,9 @@ void Pharmacist::mark_as_given(int pat_id) {
          if (choice == 1) mark_as_given(pat_id);
      }
  }
+
+Pharmacist::Pharmacist(string name, string password, int id) {
+    this->name = name;
+    this->password = password;
+    this->id = id;
+}

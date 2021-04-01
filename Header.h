@@ -9,15 +9,12 @@
 #include <cmath>
 using namespace std;
 
-//void appointment_name(int);
-//void appointment_time(int);
-
 class Examination {
+public:
     int patient_id;
     int time;
     int doctor_id;
     bool was_held = false;
-public:
     Examination(int patient_id, int doctor_id, int time) {
         this->patient_id = patient_id;
         this->doctor_id = doctor_id;
@@ -105,10 +102,8 @@ public:
     string show_password();
     Timetable getShedule();
     string get_name();
-
     void add_recipe(int patient_id, vector<string> medicines);
     void add_refferal(int patient_id);
-    void new_examination(int doctor_id);
     void add_health_problems(int patient_id, vector<string> problems);
     void remove_health_problems(int patient_id, vector<string> problems);
 };
@@ -117,11 +112,7 @@ class Pharmacist {
 public:
     string password, name;
     int id;
-    Pharmacist(string name, string password, int id) {
-        this->name = name;
-        this->password = password;
-        this->id = id;
-    }
+    Pharmacist(string name, string password, int id);
     void show_recipe(int id);
     void mark_as_given(int id);
 };

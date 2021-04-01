@@ -57,6 +57,7 @@ string authorize() {
     cin >> id;
     cout << "password: ";
     cin >> password;
+    cout << "-----------------------------------" << endl;
     if (!id.empty() && !password.empty()) {
         int role_key = id[0] - 48;
         int index = 0;
@@ -465,6 +466,7 @@ void doctor_working_loop(int role, int pos) {
                      while (treatment_choice != 0) {
                          cout << "Medical card-1\nAdd recipe-2\nAdd referral-3\nAdd health problems-4\nDelete health problems-5\nFinish treatment-6\nChoice: ";
                          cin >> treatment_choice;
+                         cout << "-----------------------------------" << endl;
                          vector<string> medicines;
                          string tmp = "\0";
                          int doc_choice, referral_time;

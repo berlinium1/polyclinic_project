@@ -49,6 +49,15 @@ void Patient::show_info() {
             cout << current_recipe.medicines[i] << endl;
         }
     }
+    if (!previous_examintions.empty()) {
+        cout << "-----------------------------------" << endl;
+        cout << "History: " << endl;
+        for (size_t i = 0; i < previous_examintions.size(); i++) {
+            if (i > 3) break;
+            appointment_name(previous_examintions[i].doctor_id);
+            appointment_time(previous_examintions[i].time);
+        }
+    }
 }
 
 int Patient::getPatientId() {
