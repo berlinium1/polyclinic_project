@@ -7,6 +7,7 @@
 #include <iomanip>
 #include <vector>
 #include <cmath>
+#include <limits>
 using namespace std;
 
 class Examination {
@@ -124,7 +125,7 @@ public:
     void finish_treatment(int patient_id);
 };
 
-int pick_time(int, int);
+int correct_input(int, int);
 void set_time();
 int get_current_time();
 string authorize();
