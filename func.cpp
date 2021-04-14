@@ -572,17 +572,17 @@ void pharmacist_working_loop(int pos) {
         if (choice == '1') {
              int pat_id;
              cout << "Insert the patient id: ";
-            while(true){
+            while(!flag){
              cin >> pat_id;
-             if (pat_id == 0) {
-                 flag = 1;
-                 break;
-             }
-                if (position(pat_id) >= patients.size() || position(pat_id) < 0 || cin.fail()) {
+                if (position(pat_id) >= patients.size() || position(pat_id) < 0 || !cin) {
                     cin.clear();
                     cin.ignore(32767, '\n');
-                    cout << "Input is invalid. Please try again.\n";
-                    continue;
+                    cout << "Input is invalid or there's no patient with id "<<pat_id<<". Please try again.\n";
+                    flag = 1;
+                    break;
+                }
+                if (pat_id == 0) {
+                 flag = 1;
                 }
                 break;
             }
