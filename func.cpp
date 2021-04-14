@@ -26,8 +26,7 @@ void set_time() {
             min = 0;
         }
     }
-    cout << "Choice: " << endl;
-    cin >> choice;
+    choice = pick_time(1, 15);
     CURRENT_TIME = (choice - 1) * 15;
     cout << "-----------------------------------" << endl;
 }
@@ -36,11 +35,24 @@ int get_current_time() {
     return CURRENT_TIME;
 }
 
-int pick_time() {
+int pick_time(int from, int to) {
     int choice;
-    cout << "pick free time" << endl;
-    cin >> choice;
-    return choice - 1;
+    while (true)
+    {
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        if (cin.fail() || choice > to || choice < from) {
+            cin.clear();
+            cin.ignore(32767, '\n');
+            cout << "Input is invalid. Please try again.\n";
+        }
+        else {
+            cin.ignore(32767, '\n');
+
+            return choice - 1;
+        }
+    }
 }
 
 
@@ -137,8 +149,8 @@ string authorize() {
 
 void register_user() {
     int choice;
-    cout << "Registration\nChoose the option:\nPatient-1\nDoctor-2\nPharmacist-3\nChoice: " << endl;
-    cin >> choice;
+    cout << "Registration\nChoose the option:\nPatient-1\nDoctor-2\nPharmacist-3" << endl;
+    choice = pick_time(1, 3) + 1;
     if (choice == 1) {
         string name, password1, password2;
         int sex, age;
@@ -268,7 +280,6 @@ void get_access(int role, int pos) {
 }
 
 void patient_work_loop(int pos) {
-    //Patient user = patients[pos];
     int choice = -1;
     cout << "-----------------------------------" << endl;
     cout << "Insert 0 any time you want to leave\n";
@@ -302,7 +313,7 @@ void patient_work_loop(int pos) {
                 Timetable table = therapists[doc].getShedule();
                 table.show_table();
                 while (true) {
-                    int time = pick_time();
+                    int time = pick_time(1, 15);
                     if (time == -1) break;
                     if (therapists[doc].getShedule().appointments[time].getTime() != NULL) {
                         cout<<"Pay attention: this time's already occupied. Choose another variant.\n";
@@ -323,10 +334,10 @@ void appointment_name(int id) {
     int index = id - role * pow(10, nums);
     switch (role) {
     case 2:
-        cout << "Doctor: " << doctors[index].get_name();
+        cout << "Doctor: " << doctors[index].get_name() << " " << doctors[index].get_spec();
         break;
     case 4:
-        cout << "Doctor: " << therapists[index].get_name();
+        cout << "Doctor: " << therapists[index].get_name() << " Therapist";
     }
 }
 

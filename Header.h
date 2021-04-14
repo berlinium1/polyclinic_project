@@ -106,6 +106,7 @@ public:
     void add_refferal(int patient_id);
     void add_health_problems(int patient_id, vector<string> problems);
     void remove_health_problems(int patient_id, vector<string> problems);
+    string get_spec();
 };
 
 class Pharmacist {
@@ -123,7 +124,7 @@ public:
     void finish_treatment(int patient_id);
 };
 
-int pick_time();
+int pick_time(int, int);
 void set_time();
 int get_current_time();
 string authorize();

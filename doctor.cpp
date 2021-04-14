@@ -38,7 +38,7 @@ void Doctor::add_refferal(int pat_id) {
      find_docs(tmp);
      cin >> doc_choice;
      doctors[doc_choice].getShedule().show_table();
-     referral_time = pick_time();
+     referral_time = pick_time(1, 15);
      doctors[doc_choice].getShedule().add_appointment(referral_time * 15, pat_id, doctors[doc_choice].getDoctorId());
      patients[position(pat_id)].set_appointment(Appointment(patients[position(pat_id)].getPatientId(), doctors[doc_choice].getDoctorId(), referral_time));
  }
@@ -116,4 +116,8 @@ Pharmacist::Pharmacist(string name, string password, int id) {
     this->name = name;
     this->password = password;
     this->id = id;
+}
+
+string Doctor::get_spec() {
+    return specialization;
 }
