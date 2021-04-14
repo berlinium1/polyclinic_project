@@ -308,8 +308,17 @@ void patient_work_loop(int pos) {
                     cout << i << ") " << therapists[i].get_name() << endl;
                 }
                 cout << "Choice: " << endl;
+                while(true){
                 cin >> doc;
+                if (cin.fail() || doc >= therapists.size() || doc < therapists.size()-1) {
+                        cin.clear();
+                        cin.ignore(32767, '\n');
+                        cout << "Input is invalid. Please try again.\n";
+                        continue;
+                }
                 int doc_id = therapists[doc].getDoctorId();
+                break;
+            }
                 Timetable table = therapists[doc].getShedule();
                 table.show_table();
                 while (true) {
