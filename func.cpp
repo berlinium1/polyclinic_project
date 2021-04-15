@@ -34,14 +34,15 @@ int get_current_time() {
     return CURRENT_TIME;
 }
 
-int correct_input(int first, int last)
+int correct_input(int first, int last) // для выбора цифры
 {
     int choice;
     bool input;
 
-    cout << "Choice: ";
     do
     {
+        cout << "Choice: ";
+
         input = true;
         cin >> choice;
         if (cin.fail() || choice < first || choice > last)
@@ -56,10 +57,10 @@ int correct_input(int first, int last)
     return choice;
 }
 
-int correct_id(int prompt_role, string error_report)
-{
-    int id, nums, role, pos;
-    bool input;
+int correct_id(int prompt_role, string error_report) // для ввода айди с приявязкой к роли 
+{                                                    // если хотим получить айди пациента, вводим 1, если врача 2 и тд
+    int id, nums, role, pos;                         // иначе мы можем ввести айди терапевта/врача/фармацевта вместо айди пациента, 
+    bool input;                                      // когда врач вводит айди чтобы лечить (doctor_working_loop -> 391)
 
     do
     {
@@ -71,9 +72,7 @@ int correct_id(int prompt_role, string error_report)
         role = int(id / pow(10, nums));
         pos = id - role * pow(10, nums);
 
-        
-
-        if (cin.fail() || role != prompt_role || id < 10)
+        if (cin.fail() || role != prompt_role || id < 10)   // отличается от следующей ф-ии только этой строкой 
         {
             input = false;
             cin.clear();
@@ -89,16 +88,13 @@ int correct_id(int prompt_role, string error_report)
             case 4: if (pos >= therapists.size()) input = false; break;
             }
         }
-        
-
-        if(!input) cout << error_report + "\n";
-
+        if (!input) cout << error_report + "\n";
     } while (!input);
 
     return id;
 }
 
-int correct_id(string error_report)
+int correct_id(string error_report)     // для ввода айди без привязки к роли
 {
     int id, nums, role, pos;
     bool input;
@@ -128,13 +124,9 @@ int correct_id(string error_report)
             case 3: if (pos >= pharmacists.size()) input = false; break;
             case 4: if (pos >= therapists.size()) input = false; break;
             }
-        }     
-
-
+        }    
         if (!input) cout << error_report + "\n";
-
     } while (!input);
-
     return id;
 }
 
@@ -161,14 +153,16 @@ string authorize() {
         int nums = id == 0 ? 1 : int(log10(id));
         int role = int(id / pow(10, nums));
         int pos = id - role * pow(10, nums);
-        if (password == )
+        
+        switch (role)
         {
-
+        case 1: if (password == patients[pos].show_password()) return to_string(id); else return "\n"; break;
+        case 2: if (password == doctors[pos].show_password()) return to_string(id); else return "\n"; break;
+        case 3: if (password == pharmacists[pos].password) return to_string(id); else return "\n"; break;
+        case 4: if (password == therapists[pos].show_password()) return to_string(id); else return "\n"; break;
         }
     }
-    else cout << "Empty password!";
-
-
+    else return "\n";
 }
 
 void register_user() {
@@ -374,10 +368,13 @@ void appointment_time(int time) {
 void find_docs(string spec) {
     cout << "-----------------------------------" << endl;
     cout << spec << " doctors:" << endl;
+
     for (size_t i = 0; i < doctors.size(); i++) {
-        cout << i << "--" << doctors[i].get_name() << endl;
+        if (spec == doctors[i].get_spec())
+        {
+            cout << doctors[i].getDoctorId() << "--" << doctors[i].get_name() << endl;
+        }
     }
-    cout << "Choice: ";
 }
 
 void doctor_working_loop(int role, int pos) {
@@ -395,7 +392,7 @@ void doctor_working_loop(int role, int pos) {
             case 1:
                 int pat_id;
                 cout << "Insert patients id.\n";
-                pat_id = correct_id(1);
+                pat_id = correct_id(1, "No patients with such ID.");
                 if (position(pat_id) > patients.size() || position(pat_id) < 0) {
                     cout << "\nIncorrect id";
                 }
@@ -490,7 +487,7 @@ void doctor_working_loop(int role, int pos) {
              case 1:
                  int pat_id;
                  cout << "Insert patients id. \n ";
-                 pat_id = correct_id(1);
+                 pat_id = correct_id(1, "No patients with such ID.");
 
                  if (position(pat_id) > patients.size() || position(pat_id) < 0) {
                      cout << "Incorrect id";
@@ -499,10 +496,10 @@ void doctor_working_loop(int role, int pos) {
                      Patient patient = patients[position(pat_id)];
                      patients[position(pat_id)].is_being_treated = true;
                      patients[position(pat_id)].current_examination = Examination(patients[position(pat_id)].getPatientId(), user.getDoctorId(), patients[position(pat_id)].get_appointment().getTime());
-                     int treatment_choice = correct_input(0, 6);
+                     int treatment_choice = 1;
                      cout << "-----------------------------------" << endl;
                      cout << "Treatment menu:" << endl;
-                     while (treatment_choice != '0') {
+                     while (treatment_choice != 0) {
                          cout << "Medical card-1\nAdd recipe-2\nAdd referral-3\nAdd health problems-4\nDelete health problems-5\nFinish treatment-6\n";
                          treatment_choice = correct_input(0,6);
                          cout << "-----------------------------------" << endl;
@@ -584,12 +581,11 @@ void pharmacist_working_loop(int pos) {
         cout << "-----------------------------------" << endl;
         cout << "Exit-0\nCheck recipe-1\n";
         choice = correct_input(0,1);
-        bool flag = 0;
         if (choice == 1) {
 
              int pat_id;
              cout << "Insert the patient id: ";
-             pat_id = correct_input(20, position(patients[patients.size() - 1].getPatientId()));
+             pat_id = correct_id(1, "No patients with such ID.");
             
              pharmacists[pos].show_recipe(pat_id);
         }
@@ -609,6 +605,7 @@ void main_loop() {
          }
          if (c == 2) {
              string res = authorize();
+             if (res == "\n") cout << "Invalid password!\n";
              int role_key = res[0] - 48;
              int pos = index(res);
              switch (role_key) {
