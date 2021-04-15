@@ -126,6 +126,8 @@ public:
 };
 
 int correct_input(int, int);
+int correct_id(int, string);
+int correct_id(string);
 void set_time();
 int get_current_time();
 string authorize();

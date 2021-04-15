@@ -39,7 +39,7 @@ int correct_input(int first, int last)
     int choice;
     bool input;
 
-    cout << "Enter your choice: ";
+    cout << "Choice: ";
     do
     {
         input = true;
@@ -56,6 +56,90 @@ int correct_input(int first, int last)
     return choice;
 }
 
+int correct_id(int prompt_role, string error_report)
+{
+    int id, nums, role, pos;
+    bool input;
+
+    do
+    {
+        cout << "Choice: ";
+        input = true;
+        cin >> id;
+
+        nums = id == 0 ? 1 : int(log10(id));
+        role = int(id / pow(10, nums));
+        pos = id - role * pow(10, nums);
+
+        
+
+        if (cin.fail() || role != prompt_role || id < 10)
+        {
+            input = false;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+        else
+        {
+            switch (prompt_role)
+            {
+            case 1: if (pos >= patients.size()) input = false; break;
+            case 2: if (pos >= doctors.size()) input = false; break;
+            case 3: if (pos >= pharmacists.size()) input = false; break;
+            case 4: if (pos >= therapists.size()) input = false; break;
+            }
+        }
+        
+
+        if(!input) cout << error_report + "\n";
+
+    } while (!input);
+
+    return id;
+}
+
+int correct_id(string error_report)
+{
+    int id, nums, role, pos;
+    bool input;
+
+    do
+    {
+        cout << "Choice: ";
+        input = true;
+        cin >> id;
+
+        nums = id == 0 ? 1 : int(log10(id));
+        role = int(id / pow(10, nums));
+        pos = id - role * pow(10, nums);
+
+        if (cin.fail() || id < 10)
+        {
+            input = false;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+        else
+        {
+            switch (role)
+            {
+            case 1: if (pos >= patients.size()) input = false; break;
+            case 2: if (pos >= doctors.size()) input = false; break;
+            case 3: if (pos >= pharmacists.size()) input = false; break;
+            case 4: if (pos >= therapists.size()) input = false; break;
+            }
+        }     
+
+
+        if (!input) cout << error_report + "\n";
+
+    } while (!input);
+
+    return id;
+}
+
+
+
 /*
 first id number
 1-Patient
@@ -64,87 +148,27 @@ first id number
 4-Therapist
 */
 string authorize() {
-    string id, password;
-    cout << "Authorization\nid: ";
-    cin >> id;
+    int id;
+    string password;
+    cout << "Authorization\n Enter ID.\n";
+    id = correct_id("You entered invalid ID. Please, try again.");
     cout << "password: ";
     cin >> password;
     cout << "-----------------------------------" << endl;
-    if (!id.empty() && !password.empty()) {
-        int role_key = id[0] - 48;
-        int index = 0;
+    
+    if (!password.empty())
+    {
+        int nums = id == 0 ? 1 : int(log10(id));
+        int role = int(id / pow(10, nums));
+        int pos = id - role * pow(10, nums);
+        if (password == )
+        {
 
-        if (role_key < 1 || role_key > 4) {
-            cout << "incorrect user data!\n";
-            return "\0";
         }
-
-        for (size_t i = 1; i < id.length(); i++) {
-            if (id[i] < 48 || id[i] > 57) {
-                return "\0";
-            }
-            index *= 10;
-            index += id[i] - 48;
-        }
-
-        if (role_key == 1) {
-            if (patients.size() < index) {
-                cout << "incorrect id was given" << endl;
-                return "\0";
-            }
-            else {
-                if (patients[index].show_password() == password) {
-                    return id;
-                } else cout << "incorrect password was given" << endl;
-                return "\0";
-            }
-        }
-
-        if (role_key == 2) {
-            if (doctors.size() < index) {
-                cout << "incorrect id or password was given" << endl;
-                return "\0";
-            }
-            else {
-                if (doctors[index].show_password() == password) {
-                    return id;
-                }
-                return "\0";
-            }
-        }
-
-        if (role_key == 3) {
-            if (pharmacists.size() < index) {
-                cout << "incorrect id or password was given" << endl;
-                return "\0";
-            }
-            else {
-                if (pharmacists[index].password == password) {
-                    return id;
-                }
-                return "\0";
-            }
-        }
-
-        if (role_key == 4) {
-            if (therapists.size() < index) {
-                cout << "incorrect id or password was given" << endl;
-                return "\0";
-            }
-            else {
-                if (therapists[index].show_password() == password) {
-                    return id;
-                }
-                return "\0";
-            }
-        }
-
     }
-    else {
-        cout << "Empty id or password was given";
-        return "\0";
-    }
-    return "\0";
+    else cout << "Empty password!";
+
+
 }
 
 void register_user() {
@@ -371,7 +395,7 @@ void doctor_working_loop(int role, int pos) {
             case 1:
                 int pat_id;
                 cout << "Insert patients id.\n";
-                cin >> pat_id;
+                pat_id = correct_id(1);
                 if (position(pat_id) > patients.size() || position(pat_id) < 0) {
                     cout << "\nIncorrect id";
                 }
@@ -466,7 +490,8 @@ void doctor_working_loop(int role, int pos) {
              case 1:
                  int pat_id;
                  cout << "Insert patients id. \n ";
-                 pat_id = correct_input(0, numeric_limits<int>::max());
+                 pat_id = correct_id(1);
+
                  if (position(pat_id) > patients.size() || position(pat_id) < 0) {
                      cout << "Incorrect id";
                  }
