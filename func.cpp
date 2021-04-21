@@ -26,7 +26,7 @@ void set_time() {
         }
     }
     choice = pick_time(1, 15);
-    CURRENT_TIME = (choice - 1) * 15;
+    CURRENT_TIME = choice * 15;
     cout << "-----------------------------------" << endl;
 }
 
@@ -153,7 +153,7 @@ void register_user() {
         string name, password1, password2;
         int sex, age;
         cout << "Enter your name: ";
-        getline(cin.ignore(), name);
+        getline(cin, name);
         cout << "Enter your password: ";
         cin >> password1;
         cout << "Enter it again: ";
@@ -355,13 +355,14 @@ void appointment_time(int time) {
     cout << " Time: " << h + 9 << ":" << m << endl;
 }
 
-void find_docs(string spec) {
+int find_docs(string spec) {
     cout << "-----------------------------------" << endl;
     cout << spec << " doctors:" << endl;
     for (size_t i = 0; i < doctors.size(); i++) {
         cout << i << "--" << doctors[i].get_name() << endl;
     }
-    cout << "Choice: ";
+    int choice = pick_time(0, doctors.size());
+    return choice;
 }
 
 void doctor_working_loop(int role, int pos) {
@@ -593,7 +594,6 @@ void pharmacist_working_loop(int pos) {
          }
      }
  }
-
 
 void main_loop() {
      int c = -1;

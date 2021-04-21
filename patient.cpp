@@ -8,7 +8,6 @@ Patient::Patient(string name, string password, int id, int sex, int age) {
     this->age = age;
     this->sex = sex;
     this->current_appointment = Appointment(id, NULL, NULL);
-    //cout << "000000000000000000000" << endl;
 }
 
 void Patient::make_appointment(int doctor_index, int time) {

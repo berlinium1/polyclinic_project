@@ -138,7 +138,7 @@ void doctor_working_loop(int, int);
 void pharmacist_working_loop(int);
 int position(int);
 void main_loop();
-void find_docs(string);
+int find_docs(string);
 
 extern vector<Patient> patients;
 extern vector<Doctor> doctors;

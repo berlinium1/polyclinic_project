@@ -35,8 +35,8 @@ void Doctor::add_refferal(int pat_id) {
      cout << "Referral menu:\n";
      int doc_choice, referral_time;
      string tmp = choose_specialization();
-     find_docs(tmp);
-     cin >> doc_choice;
+     doc_choice = find_docs(tmp);
+     
      doctors[doc_choice].getShedule().show_table();
      referral_time = pick_time(1, 15);
      doctors[doc_choice].getShedule().add_appointment(referral_time * 15, pat_id, doctors[doc_choice].getDoctorId());
