@@ -174,7 +174,7 @@ void register_user() {
         string name, password1, password2;
         int sex, age;
         cout << "Enter your name: ";
-        getline(cin, name);
+        getline(cin.ignore(), name);
         cout << "Enter your password: ";
         cin >> password1;
         cout << "Enter it again: ";
@@ -326,7 +326,7 @@ void patient_work_loop(int pos) {
                 for (size_t i = 0; i < therapists.size(); i++) {
                     cout << i << ") " << therapists[i].get_name() << endl;
                 }
-                cout << "Choice: " << endl;
+                //cout << "Choice: " << endl;
                 doc = correct_input(0, therapists.size());
                 Timetable table = therapists[doc].getShedule();
                 table.show_table();
