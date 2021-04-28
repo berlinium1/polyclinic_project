@@ -35,10 +35,20 @@ void Doctor::add_refferal(int pat_id) {
      cout << "Referral menu:\n";
      int doc_choice, referral_time;
      string tmp = choose_specialization();
-     doc_choice = find_docs(tmp);
-     
+
+     find_docs(tmp);
+
+     doc_choice = correct_id(2, "No doctors with such ID.");
+     while (doctors[position(doc_choice)].get_spec() != tmp)
+     {
+         cout << "Please, choose one of proposed!\n";
+         doc_choice = correct_id(2, "No doctors with such ID.");
+     }
+
+     doc_choice = position(doc_choice);
+
      doctors[doc_choice].getShedule().show_table();
-     referral_time = pick_time(1, 15);
+     referral_time = correct_input(1, 15);
      doctors[doc_choice].getShedule().add_appointment(referral_time * 15, pat_id, doctors[doc_choice].getDoctorId());
      patients[position(pat_id)].set_appointment(Appointment(patients[position(pat_id)].getPatientId(), doctors[doc_choice].getDoctorId(), referral_time));
  }
@@ -97,12 +107,12 @@ void Pharmacist::mark_as_given(int pat_id) {
      Recipe rec = patients[pat_pos].current_recipe;
      vector<string> meds = rec.medicines;
      cout << "-----------------------------------" << endl;
-     cout << "Recipe";
+     cout << "Recipe: ";
      for (size_t i = 0; i < meds.size(); i++) {
          cout << meds[i] << endl;
      }
      if (meds.empty()) {
-         cout << "Empty recipe!" << endl;
+         cout << "Empty recipe! " << endl;
      }
      else {
          int choice;
